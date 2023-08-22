@@ -1,0 +1,343 @@
+<?xml version='1.0'?>
+<robot name="husky" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+  <xacro:include filename="$(find husky_simulation)/urdf/husky.gazebo" />
+<!-- Base link is the center of the robot's bottom plate -->
+<link name="base_link">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find husky_simulation)/meshes/base_link_logo.dae" />
+        </geometry>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find husky_simulation)/meshes/base_link_logo.dae" /><!-- <box size="0.7899 0.5709 0.10375"/> -->
+        </geometry>
+    </collision>
+</link>
+
+<!-- Husky chassis -->
+<link name="top_chassis_link">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/top_chassis.dae" />
+        </geometry>
+    </visual>
+</link>
+<joint name="top_chassis_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="top_chassis_link" />
+</joint>
+
+<!-- User rails -->
+<link name="user_rail_link">
+    <visual>
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/user_rail.dae" />
+        </geometry>
+    </visual>
+</link>
+<joint name="user_rail" type="fixed">
+    <origin xyz="0.272 0 0.245" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="user_rail_link" />
+</joint>
+
+<!-- Front bumper link -->
+<link name="front_bumper_link">
+    <visual>
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/bumper.dae" />
+        </geometry>
+    </visual>
+</link>
+<joint name="front_bumper" type="fixed">
+    <origin xyz="0.48 0 0.091" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="front_bumper_link" />
+</joint>
+
+<!-- Rear bumper link -->
+<link name="rear_bumper_link">
+    <visual>
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/bumper.dae" />
+        </geometry>
+    </visual>
+</link>
+<joint name="rear_bumper" type="fixed">
+    <origin xyz="-0.48 0 0.091" rpy="0 0 3.1419" />
+    <parent link="base_link" />
+    <child link="rear_bumper_link" />
+</joint>
+
+<link name="top_plate_link">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/large_top_plate.dae" />
+        </geometry>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/large_top_plate_collision.stl" />
+        </geometry>
+    </collision>
+</link>
+<joint name="top_plate_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="top_plate_link"/>
+    <origin xyz="0.0812 0 0.225" rpy="0 0 0"/>
+</joint>
+<!-- Top plate front link -->
+<joint name="top_plate_front_joint" type="fixed">
+    <parent link="top_plate_link" />
+    <child link="top_plate_front_link"/>
+    <origin xyz="0.4125 0 0.00672" rpy="0 0 0"/>
+</joint>
+<!-- Top plate rear link-->
+<joint name="top_plate_rear_joint" type="fixed">
+    <parent link="top_plate_link" />
+    <child link="top_plate_rear_link"/>
+    <origin xyz="-0.4125 0 0.00672" rpy="0 0 0"/>
+</joint>
+<link name="top_plate_front_link"/>
+<link name="top_plate_rear_link"/>
+
+<!-- Base footprint is on the ground under the robot -->
+<link name="base_footprint">
+</link>
+<joint name="$base_footprint_joint" type="fixed">
+    <origin xyz="0 0 -0.13228" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="base_footprint" />
+</joint>
+
+<!-- Mastil -->
+<!--link name="upper_mast_link">
+    <visual>
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/Soporte_mastil.dae" />
+        </geometry>
+    </visual>
+</link>
+<joint name="upper_mastil_link" type="fixed">
+    <origin xyz="0.05 0 0.45" rpy="0 0 1.57" />
+    <parent link="base_link" />
+    <child link="upper_mast_link" />
+</joint-->
+
+
+<!-- Inertial link stores the robot's inertial information -->
+<link name="inertial_link">
+    <inertial>
+        <mass value="5.034" /> <!--46.034 -->
+        <origin xyz="-0.00065 -0.085 0.062" />
+        <inertia ixx="0.6022" ixy="-0.02364" ixz="-0.1197" iyy="1.7386" iyz="-0.001544" izz="2.0296" />
+    </inertial>
+</link>
+<joint name="inertial_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="inertial_link" />
+</joint>
+
+<!--link name="structure">
+    <inertial>
+        <mass value="8.51637756979693" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.258206919587897" ixy="-3.02556764651227E-06" ixz="6.93128254044665E-06" iyy="0.296960404834235" iyz="-0.0001246582297324" izz="0.153127456260744" />
+    </inertial>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/Structure.dae" />
+        </geometry>
+        <material name="White">
+            <color rgba="0.0 0.0 1.0 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find husky_simulation)/meshes/Structure.dae" />
+        </geometry>
+    </collision>
+</link>
+<joint name="structure_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="structure" />
+    <origin xyz="0.05 0.0 0.06" rpy="0.0 0 1.5708" />
+</joint-->
+
+<!-- Husky WHEELS -->
+<link name="front_left_wheel">
+    <inertial>
+        <mass value="2.637" />
+        <origin xyz="0 0 0" />
+        <inertia  ixx="0.0246688" ixy="0" ixz="0" iyy="0.0246688" iyz="0" izz="0.0441058" />
+    </inertial>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/wheel.dae" />
+        </geometry>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder length="0.1143" radius="0.17775" />
+        </geometry>
+    </collision>
+</link>
+<joint name="front_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_left_wheel"/>
+    <origin rpy="0 0 0" xyz="0.256 0.285475 0.035"/>
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="10000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="front_right_wheel">
+    <inertial>
+        <mass value="2.637" />
+        <origin xyz="0 0 0" />
+        <inertia  ixx="0.0246688" ixy="0" ixz="0" iyy="0.0246688" iyz="0" izz="0.0441058" />
+    </inertial>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/wheel.dae" />
+        </geometry>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder length="0.1143" radius="0.17775" />
+        </geometry>
+    </collision>
+</link>
+<joint name="front_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_right_wheel"/>
+    <origin rpy="0 0 0" xyz="0.256 -0.285475 0.035"/>
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="10000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="back_left_wheel">
+    <inertial>
+        <mass value="2.637" />
+        <origin xyz="0 0 0" />
+        <inertia  ixx="0.0246688" ixy="0" ixz="0" iyy="0.0246688" iyz="0" izz="0.0441058" />
+    </inertial>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/wheel.dae" />
+        </geometry>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder length="0.1143" radius="0.17775" />
+        </geometry>
+    </collision>
+</link>
+<joint name="back_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="back_left_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.256 0.285475 0.035"/>
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="10000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="back_right_wheel">
+    <inertial>
+        <mass value="2.637" />
+        <origin xyz="0 0 0" />
+        <inertia  ixx="0.0246688" ixy="0" ixz="0" iyy="0.0246688" iyz="0" izz="0.0441058" />
+    </inertial>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <mesh filename="file://$(find husky_simulation)/meshes/wheel.dae" />
+        </geometry>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0" />
+        <geometry>
+            <cylinder length="0.1143" radius="0.17775" />
+        </geometry>
+    </collision>
+</link>
+<joint name="back_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="back_right_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.256 -0.285475 0.035"/>
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="10000" velocity="1000"/>
+    <joint_properties damping="1.0" friction="1.0"/>
+</joint>
+
+<!-- LASER SCAN-->
+<link name="lidar_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.125"/>
+    <inertia ixx="0.001"  ixy="0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+  </inertial>
+
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+        <mesh filename="file://$(find husky_simulation)/meshes/os0_32.dae" />
+    </geometry>
+  </collision>
+
+  <visual>
+    <!-- <origin xyz="0.42 0 0.375" rpy="0 0 0"/> -->
+    <origin xyz="0 0 0" rpy="0 0 0"/>   
+    <geometry>
+        <mesh filename="file://$(find husky_simulation)/meshes/os0_32.dae" />
+    </geometry>
+  </visual>
+</link>
+
+<joint name="lidar_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="lidar_link"/>
+  <origin xyz="0.0 0 0.3" rpy="0 0 0"/>
+</joint>
+
+
+<!-- CAMERA1 AXIS-->
+<!--link name="camera_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.125"/>
+    <inertia ixx="0.001"  ixy="0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+  </inertial>
+
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+       <box size = "0.0761 0.0701 0.105"/>
+    </geometry>
+  </collision>
+
+</link>
+
+<joint name="camera_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="camera_link"/>
+  <origin xyz="-0.28 0 1.38" rpy="0 0 0"/>
+</joint-->
+
+</robot>
