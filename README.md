@@ -1,6 +1,6 @@
 # Husky Robot
 
-This repository contains code for simulating the Husky robot and performing various tasks such as navigation, mapping, and SLAM using ROS 2 Humbel and the Husky UAL package.
+This repository contains code for simulating the Husky robot and performing various tasks such as navigation, mapping, and SLAM using ROS 2 Humbel and the Husky robot.
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ For Ubuntu 22.04, follow these steps:
 
 ```bash
 cd /<your_workspace>/src
-git clone -b humbel-devel https://github.com/khaledgabr77/TFG_Husky_UAL.git
+git clone https://github.com/khaledgabr77/husky_simulation
 cd ../..
 rosdep install --from-paths src --ignore-src -r -y
 colcon build
@@ -36,33 +36,14 @@ source install/setup.bash
 Clone the AWS RoboMaker Small Warehouse World repository from GitHub:
 
 ```bash
+cd /<your_workspace>/src
 git clone -b ros2 https://github.com/aws-robotics/aws-robomaker-small-warehouse-world.git
-```
-
-Copy the models and worlds folders from aws-robomaker-small-warehouse-world and add them to your TFG_Husky_UAL package directory:
-
-```bash
-cp -r aws-robomaker-small-warehouse-world/models <your_workspace>/src/TFG_Husky_UAL/husky_ual_description/
-cp -r aws-robomaker-small-warehouse-world/worlds <your_workspace>/src/TFG_Husky_UAL/husky_ual_description/
-```
-
-Update your CMakeLists.txt file inside your install directory by adding the following folders:
-
-```bash
-    worlds
-    models
 ```
 
 Export the GAZEBO_MODEL_PATH:
 
 ```bash
-export GAZEBO_MODEL_PATH=`pwd`/models
-```
-
-Launch the Husky robot and the warehouse environment:
-
-```bash
-ros2 launch husky_ual husky_simulation.launch.py
+export GAZEBO_MODEL_PATH=/home/riot/src/ros2_ws/src/aws-robomaker-small-warehouse-world/models/
 ```
 
 ### Simulation
@@ -77,7 +58,7 @@ source install/setup.bash
 Launch the Husky robot and the warehouse environment:
 
 ```bash
-ros2 launch husky_ual husky_simulation.launch.py
+ros2 launch husky_simulation hasky_gazebo.launch.py 
 ```
 
 Drive the robot using teleop:
@@ -93,8 +74,8 @@ To perform SLAM with this package, ensure you have built the Slam-Toolbox from s
 Launch the mapping process:
 
 ```bash
-ros2 launch husky_ual husky_simulation.py
-ros2 launch husky_ual online_async_launch.py
+ros2 launch hasky_navigation husky_simulation.py
+ros2 launch hasky_naviagtion online_async_launch.py
 ros2 run teleop_twist_keyboard teleop_twist_keyboard 
 ```
 
