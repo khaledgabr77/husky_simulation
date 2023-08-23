@@ -104,7 +104,7 @@ To launch the navigation2 stack for the Husky robot in the warehouse environment
 2. Launch the navigation2 stack using the following command:
 
     ```bash
-    ros2 launch husky_navigation husky_simulation.launch.py 
+    ros2 launch husky_navigation husky_navigation.launch.py  use_sim_time:=True autostart:=True map:=src/TFG_Husky_UAL/husky_navigation/maps/warehouse_slam_toolbox.yaml    
     ```
 
 ### Setting Navigation Goal
