@@ -6,11 +6,9 @@ import os
 
 def generate_launch_description():
     pkg_share = launch_ros.substitutions.FindPackageShare(package='husky_simulation').find('husky_simulation')
-    warehouse_dir = get_package_share_directory('aws_robomaker_small_warehouse_world')
-    
     default_model_path = os.path.join(pkg_share, 'urdf/husky_ual.urdf.xacro')
     default_rviz_config_path = os.path.join(pkg_share, 'rviz/nav2_default_view.rviz')
-    world_path = os.path.join(warehouse_dir, 'worlds/industrial_warehouse.world')
+    world_path = os.path.join(pkg_share, 'worlds/industrial_warehouse.world')
        
     declare_world_cmd = launch.actions.DeclareLaunchArgument(
         'world',
@@ -45,13 +43,15 @@ def generate_launch_description():
                    '-Y', LaunchConfiguration('yaw_pose')],
         output='screen'
     )
+    
     rviz_node = launch_ros.actions.Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
         output='screen',
         arguments=['-d', LaunchConfiguration('rvizconfig')],
-    )    
+    )  
+    
 
 
     return launch.LaunchDescription([
@@ -73,7 +73,7 @@ def generate_launch_description():
                                              description='Initial roll pose of the robot'),
         launch.actions.DeclareLaunchArgument(name='pitch_pose', default_value='0.0',
                                              description='Initial pitch pose of the robot'),
-        launch.actions.DeclareLaunchArgument(name='yaw_pose', default_value='0.0',
+        launch.actions.DeclareLaunchArgument(name='yaw_pose', default_value='1.5705',
                                              description='Initial yaw pose of the robot'),
         launch.actions.ExecuteProcess(cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', world_path], output='screen'),
         joint_state_publisher_node,

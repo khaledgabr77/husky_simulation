@@ -32,6 +32,7 @@ install(
     launch
     meshes
     models
+    worlds
   DESTINATION
     share/${PROJECT_NAME}/
 )

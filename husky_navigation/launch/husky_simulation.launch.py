@@ -11,7 +11,7 @@ def generate_launch_description():
 
     default_model_path = os.path.join(pkg_share, 'urdf/husky_ual.urdf.xacro')
     default_rviz_config_path = os.path.join(rviz_nav2, 'rviz/nav2_default_view.rviz')
-    world_path = os.path.join(warehouse_dir, 'worlds/industrial_warehouse.world')
+    world_path = os.path.join(pkg_share, 'worlds/industrial_warehouse.world')
        
     declare_world_cmd = launch.actions.DeclareLaunchArgument(
         'world',
